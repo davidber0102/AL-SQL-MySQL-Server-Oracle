@@ -1,0 +1,160 @@
+USE jugos_ventas;
+
+SELECT * FROM facturas;
+SELECT * FROM items_facturas;
+SELECT * FROM tabla_de_clientes;
+SELECT * FROM tabla_de_productos;
+SELECT * FROM tabla_de_vendedores;
+
+-- COMMANDO JOIN
+-- PERMITE UNIR DOS  MAS TABLAS MEDIANTE UN CAMPO EN COMUN
+-- LAS SENTENCIAS SQL, MANEJAN VARIEDAD DE JOIB
+-- 1.- INNER JOIN- DEVUELVE UNICAMENTE LOS REGITROS CON LLASVEC ORRESPONDIENTES
+--  --- SELECT A.NOMBRE, B.HOBBY FROM TABLA_IAZ A INNER JOIN TABLA_DER B ON A.ID=B.ID
+-- 2.- LEFT JOIN- MANTIENE TODOS LOS REGISTROS DE LA TABLA DE LA IZQUIERDA Y DEVUELVE UNICAMENTE LOS CORRESPONDIENTES DE LA TABLA DE LA DERECHA
+--  --- SELECT A.NOMBRE, B.HOBBY FROM TABLA_IAZ A LEFT JOIN TABLA_DER B ON A.ID=B.ID
+-- 3.- RIGHT JOIN- MANTIENE TOOS LOS REGISTROS DE LA TABLA DE LA DERECHA Y DEVUELVE UNICAMENTE LOS CORREPONDIENTES DE LA TABLA DE LA IQUIERDA 
+--  --- SELECT A.NOMBRE, B.HOBBY FROM TABLA_IAZ A RIGTH JOIN TABLA_DER B ON A.ID=B.ID
+-- 4.- FULL JOIN- MANTIENE Y DEVUELVE TODS LOS REGISTROS DE LAS TABLSA
+--  --- SELECT A.NOMBRE, B.HOBBY FROM TABLA_IAZ A FULL JOIN TABLA_DER B ON A.ID=B.ID
+-- 5 - CROSS JOIN - DEVUELVE EL PRODUCTO CARTESIANO DE LOS REGISTROS DE LAS TABLAS
+--  --- SELECT A.NOMBRE, B.HOBBY FROM TABLA_IAZ A, TABLA_DER B
+SELECT * FROM tabla_de_vendedores;
+SELECT * FROM facturas;
+-- INNER JOIN TABLA VENDEDORES CON FACTURAS MEDIANTE MATRICULA // ES PREFERIBLE ESTA OPCION
+SELECT * FROM tabla_de_vendedores A INNER JOIN facturas B ON A.MATRICULA=B.MATRICULA;
+SELECT A.NOMBRE, B.MATRICULA, COUNT(*) FROM tabla_de_vendedores A INNER JOIN facturas B ON A.MATRICULA=B.MATRICULA GROUP BY A.NOMBRE, B.MATRICULA;
+-- CROSS JOIN // VERSION ANTIGUA
+SELECT A.NOMBRE, B.MATRICULA, COUNT(*) FROM tabla_de_vendedores A, facturas B WHERE A.MATRICULA=B.MATRICULA GROUP BY A.NOMBRE, B.MATRICULA;
+
+-- Obtén la facturación anual de la empresa. Ten en cuenta que el valor financiero de las ventas consiste en multiplicar la cantidad por el precio.
+SELECT YEAR(FECHA_VENTA), SUM(CANTIDAD * PRECIO) AS FACTURACION FROM facturas F 
+INNER JOIN items_facturas IFa 
+ON F.NUMERO = IFa.NUMERO
+GROUP BY YEAR(FECHA_VENTA);
+
+SELECT * FROM tabla_de_clientes;
+SELECT * FROM facturas;
+SELECT COUNT(*) FROM tabla_de_clientes;
+
+SELECT DISTINCT A.DNI, A.NOMBRE, B.DNI FROM tabla_de_clientes A INNER JOIN facturas B ON A.DNI=B.DNI ;
+
+SELECT DISTINCT A.DNI, A.NOMBRE, A.CIUDAD, B.DNI FROM tabla_de_clientes A LEFT JOIN facturas B ON A.DNI=B.DNI ;
+
+SELECT DISTINCT A.DNI, A.NOMBRE, A.CIUDAD, B.DNI FROM tabla_de_clientes A LEFT JOIN facturas B ON A.DNI=B.DNI WHERE B.DNI IS NULL;
+SELECT DISTINCT A.DNI, A.NOMBRE, A.CIUDAD, B.DNI FROM facturas B RIGHT JOIN  tabla_de_clientes A ON A.DNI=B.DNI WHERE B.DNI IS NULL;
+
+-- COMANDO FULL Y CROSS JOOIN
+SELECT * FROM tabla_de_clientes;
+SELECT * FROM tabla_de_vendedores;
+
+SELECT tabla_de_clientes.NOMBRE, tabla_de_clientes.BARRIO, tabla_de_vendedores.NOMBRE, tabla_de_vendedores.BARRIO
+FROM tabla_de_clientes
+INNER JOIN tabla_de_vendedores ON tabla_de_clientes.BARRIO = tabla_de_vendedores.BARRIO;
+
+SELECT COUNT(*) FROM tabla_de_clientes;
+SELECT COUNT(*) FROM tabla_de_vendedores;
+
+SELECT tabla_de_clientes.NOMBRE, tabla_de_clientes.BARRIO, tabla_de_vendedores.NOMBRE, tabla_de_vendedores.BARRIO
+FROM tabla_de_clientes
+INNER JOIN tabla_de_vendedores ON tabla_de_clientes.BARRIO = tabla_de_vendedores.BARRIO;
+
+SELECT tabla_de_clientes.NOMBRE, tabla_de_clientes.BARRIO, tabla_de_clientes.CIUDAD, tabla_de_vendedores.NOMBRE, tabla_de_vendedores.BARRIO, tabla_de_vendedores.VACACIONES
+FROM tabla_de_clientes
+RIGHT JOIN tabla_de_vendedores ON tabla_de_clientes.BARRIO = tabla_de_vendedores.BARRIO;
+
+-- FILL JOIN
+SELECT tabla_de_clientes.NOMBRE, tabla_de_clientes.BARRIO, tabla_de_clientes.CIUDAD, tabla_de_vendedores.NOMBRE, tabla_de_vendedores.BARRIO
+FROM tabla_de_clientes
+FULL JOIN tabla_de_vendedores ON tabla_de_clientes.BARRIO = tabla_de_vendedores.BARRIO;
+
+-- CROSS JOIN
+SELECT tabla_de_clientes.NOMBRE, tabla_de_clientes.BARRIO, tabla_de_clientes.CIUDAD, tabla_de_vendedores.NOMBRE, tabla_de_vendedores.BARRIO, VACACIONES
+FROM tabla_de_clientes
+CROSS JOIN tabla_de_vendedores ON tabla_de_clientes.BARRIO = tabla_de_vendedores.BARRIO;
+
+SELECT tabla_de_clientes.NOMBRE, tabla_de_clientes.BARRIO, tabla_de_clientes.CIUDAD, tabla_de_vendedores.NOMBRE, tabla_de_vendedores.BARRIO, VACACIONES
+FROM tabla_de_clientes, tabla_de_vendedores 
+WHERE tabla_de_clientes.BARRIO = tabla_de_vendedores.BARRIO;
+
+-- COMANDO UNION
+-- PERMITE UNOR 2 O MAS TABLAS (IMPLICITAMENTE JECUTA DISTINCT)
+-- EL NUMERO DE CMAPOS EN LA TABLA DEBEEN DE SER IGUALES (MISMOS CAMPOS Y MISMSO TIPOS)
+-- <CONSULTA 1> UNION <CONSULTA 2>
+-- COMANDO UNION ALL
+-- <CONSULTA 1> UNION ALL <CONSULTA 2>
+SELECT * FROM tabla_de_clientes;
+SELECT * FROM tabla_de_vendedores;
+
+SELECT DISTINCT BARRIO FROM tabla_de_clientes;
+SELECT DISTINCT BARRIO FROM tabla_de_vendedores;
+
+-- DEVUELVE LOS BARRIOS DE AMBAS TABLAS SIN REPETIR
+SELECT DISTINCT BARRIO FROM tabla_de_clientes
+UNION
+SELECT DISTINCT BARRIO FROM tabla_de_vendedores;
+
+-- DEVUELVE LOS BARRIOS DE AMBAS TABLAS SIN REPETIR
+SELECT DISTINCT BARRIO FROM tabla_de_clientes
+UNION ALL
+SELECT DISTINCT BARRIO FROM tabla_de_vendedores;
+
+SELECT DISTINCT BARRIO, NOMBRE, 'Cliente' AS TIPO FROM tabla_de_clientes
+UNION
+SELECT DISTINCT BARRIO, NOMBRE, 'Vendedor' AS TIPO FROM tabla_de_vendedores;
+
+-- FULL JOI, SE OCUPA LEFT Y RIGTH PARA HACER POSIBLE EL COMMANDO FULL
+SELECT tabla_de_clientes.NOMBRE, tabla_de_clientes.BARRIO, tabla_de_clientes.CIUDAD, tabla_de_vendedores.NOMBRE, tabla_de_vendedores.BARRIO, tabla_de_vendedores.VACACIONES
+FROM tabla_de_clientes
+LEFT JOIN tabla_de_vendedores ON tabla_de_clientes.BARRIO = tabla_de_vendedores.BARRIO
+UNION 
+SELECT tabla_de_clientes.NOMBRE, tabla_de_clientes.BARRIO, tabla_de_clientes.CIUDAD, tabla_de_vendedores.NOMBRE, tabla_de_vendedores.BARRIO, tabla_de_vendedores.VACACIONES
+FROM tabla_de_clientes
+RIGHT JOIN tabla_de_vendedores ON tabla_de_clientes.BARRIO = tabla_de_vendedores.BARRIO;
+
+-- TEMA: SUBCONSULTAS
+-- PERMITE REAÑIZAR UNA CONSULTA DENTRO DE OTRA CONSULTA
+-- SELECT XY, FROM TB1 WHERE Y IN (1,2);
+-- SELECT XY, FROM TB1 WHERE Y IN (1,2,3);
+-- ¿SERA QUE PODEMOS SELECCIONAR LOS VALORES DE Y SIN NECESIDAD DE LISTRLOS UNO POR UNO?
+-- SELECT XY, FROM TB1 WHERE Y IN (SELECT Y FROM TB2);  SE GENERA UNA CONSULTA DENTRO DE OTRA CONSULTA
+-- SELECT X, SUM(Y) AS NEW_Y FROM TB1 GROUP BY X;
+-- SELECT Z.X, Z.NEW_Y FROM (SELECT X, SUM(Y) AS NEW_Y FROM TB1 GROUP BY X) Z WHERE Z.NEW_Y = 4;
+
+SELECT * FROM tabla_de_clientes;
+SELECT * FROM tabla_de_vendedores;
+
+SELECT DISTINCT BARRIO FROM tabla_de_clientes;
+SELECT DISTINCT BARRIO FROM tabla_de_vendedores;
+
+SELECT * FROM tabla_de_clientes WHERE BARRIO IN('Condesa', 'Contadero', 'Del Valle', 'Oblatos');
+SELECT * FROM tabla_de_clientes WHERE BARRIO IN(SELECT DISTINCT BARRIO FROM tabla_de_vendedores);
+
+SELECT ENVASE, MAX(PRECIO_DE_LISTA) AS PRECIO_MAXIMO FROM tabla_de_productos  GROUP BY ENVASE;
+
+SELECT X.ENVASE, X.PRECIO_MAXIMO FROM (SELECT ENVASE, MAX(PRECIO_DE_LISTA) AS PRECIO_MAXIMO FROM tabla_de_productos  GROUP BY ENVASE) X
+WHERE X.PRECIO_MAXIMO >=10 ;
+-- Cuál sería la consulta utilizando la subconsulta que sería equivalente a:
+SELECT DNI, COUNT(*) FROM facturas WHERE YEAR(FECHA_VENTA) = 2016 GROUP BY DNI HAVING COUNT(*) > 2000;
+SELECT X.DNI, X.CONTADOR FROM (SELECT DNI, COUNT(*) AS CONTADOR FROM facturas WHERE YEAR(FECHA_VENTA) = 2016 GROUP BY DNI) X WHERE X.CONTADOR > 2000;
+
+-- TEMA: VIEW
+-- ES UNA TABLA LOGICA QUE RESULTA DE UNA CONSUTLA QUE PUEDE SER USADA POSTERMENTE EN CUALQUUER OTRA CONSULTA
+-- SELECT X, SUM(Y) AS NEW_Y FROM TB1 GROUP BY X;
+-- AL ALMACENAR LA CONSULTA, CREAOS UNA VIW Y LA LLAMEREMOS VW_VIEW
+-- LA VISTA TIENE UN COSTO DE PROCESAMIENTO, SIEMPRE QUE LA INVOQUEMOS LA MISMA TENDRA QUE EJECUTAR SU CONSULTA(ESPECIE DE SUBCONSULTA)
+-- SELECT * FROM VW_VIEW
+SELECT * FROM tabla_de_productos;
+SELECT ENVASE, MAX(PRECIO_DE_LISTA) AS PRECIO_MAXIMO FROM tabla_de_productos  GROUP BY ENVASE;
+
+SELECT X.ENVASE, X.PRECIO_MAXIMO FROM vw_envases_grandes X 
+	WHERE PRECIO_MAXIMO >=10;
+    
+SELECT A.NOMBRE_DEL_PRODUCTO, A.ENVASE, A.PRECIO_DE_LISTA, B.PRECIO_MAXIMO FROM tabla_de_productos A
+INNER JOIN vw_envases_grandes B
+ON A.ENVASE = B.ENVASE OR
+ PRECIO_MAXIMO >=10;
+ 
+ SELECT A.NOMBRE_DEL_PRODUCTO, A.ENVASE, A.PRECIO_DE_LISTA, ((A.PRECIO_dE_LISTA/B.PRECIO_MAXIMO)-1)*100 AS PORCENTAJE_DE_VARIACION FROM tabla_de_productos A
+INNER JOIN vw_envases_grandes B
+ON A.ENVASE = B.ENVASE;

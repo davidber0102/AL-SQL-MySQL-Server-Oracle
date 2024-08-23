@@ -1,0 +1,147 @@
+USE jugos_ventas;
+
+SELECT * FROM facturas;
+SELECT * FROM items_facturas;
+SELECT * FROM tabla_de_clientes;
+SELECT * FROM tabla_de_productos;
+SELECT * FROM tabla_de_vendedores;
+
+-- comando distinct
+-- solo deveuelve registros con valores diferentes
+-- SELECT DISTINCT * FROM TB;
+SELECT * FROM tabla_de_productos;
+SELECT ENVASE, TAMANO FROM tabla_de_productos;
+SELECT DISTINCT ENVASE, TAMANO FROM tabla_de_productos;
+SELECT DISTINCT ENVASE, TAMANO, SABOR FROM tabla_de_productos WHERE SABOR = 'NARANJA';
+
+-- ¿Cuáles son los barrios en Ciudad de México que tienen clientes?
+SELECT DISTINCT BARRIO FROM tabla_de_clientes WHERE CIUDAD = 'Ciudad de México';
+
+-- COMANDO LIMIT 
+-- SE USA PARA LIMITAR EL NUMERO DE REGISTROS BUSCADOS EN LA TABLA REQUERIDA
+-- SELECT DISTINCT * FROM TB LIMIT 4;
+-- SELECT DISTINCT * FROM TB LIMIT 3,2;
+SELECT * FROM tabla_de_productos;
+SELECT * FROM tabla_de_productos LIMIT 5;
+SELECT * FROM tabla_de_productos LIMIT 5, 4;
+
+-- Queremos obtener las 10 primeras ventas del día 01/01/2017. ¿Cuál sería el comando SQL para obtener este resultado?
+SELECT * FROM facturas  WHERE FECHA_VENTA = '2017-01-01' LIMIT 10;
+
+-- COMANDO ORDER BY
+-- PRESENTAR EL RESULTADO DE LA CONSULTA ORDENADO POR EL CAMPO DETERMINADO AL EJECUTAR ORDER BY
+-- SELECT * FROM TB ORDER BY CAMPO;
+-- ASC VALOR POR DEAFULT
+-- SELECT * FROM TB ORDER BY campo_1 DESC, campo_2 ASC;
+SELECT * FROM tabla_de_productos;
+
+SELECT * FROM tabla_de_productos ORDER BY PRECIO_DE_LISTA;
+SELECT * FROM tabla_de_productos ORDER BY PRECIO_DE_LISTA DESC;
+SELECT * FROM tabla_de_productos ORDER BY NOMBRE_DEL_PRODUCTO;
+SELECT * FROM tabla_de_productos ORDER BY NOMBRE_DEL_PRODUCTO DESC;
+SELECT * FROM tabla_de_productos ORDER BY ENVASE DESC, NOMBRE_DEL_PRODUCTO ASC;
+
+-- ¿Cuál (o cuáles) fue (fueron) la(s) mayor(es) venta(s) del producto “Refrescante, 1 Litro, Frutilla/Limón”, en cantidad? (Obtenga este resultado utilizando 2 comandos SQL).
+SELECT CODIGO_DEL_PRODUCTO FROM tabla_de_productos WHERE NOMBRE_DEL_PRODUCTO = "Refrescante" AND TAMANO = "1 Litro" AND SABOR = "Frutilla/Limón"; 
+SELECT * FROM items_facturas WHERE CODIGO_DEL_PRODUCTO = "1101035" ORDER BY CANTIDAD DESC;
+
+-- COMANDO GROUP BY
+-- presenta el resultado agrupando valores numerico emplenado una clave de criterio
+-- SELECT <campo> FROM TB ORDER BY campo;
+SELECT * FROM tabla_de_clientes;
+SELECT ESTADO, LIMITE_DE_CREDITO FROM tabla_de_clientes;
+SELECT ESTADO, SUM(LIMITE_DE_CREDITO) AS LIMITE_TOTAL FROM tabla_de_clientes GROUP BY ESTADO;
+
+SELECT * FROM tabla_de_productos;
+SELECT ENVASE, PRECIO_DE_LISTA FROM tabla_de_productos;
+SELECT ENVASE, MAX(PRECIO_DE_LISTA) AS MAYOR_PRECIO FROM tabla_de_productos GROUP BY ENVASE;
+SELECT ENVASE, COUNT(*) FROM tabla_de_productos GROUP BY ENVASE;
+
+SELECT BARRIO, SUM(LIMITE_DE_CREDITO) AS LIMITE_BARRIO FROM tabla_de_clientes GROUP BY BARRIO;
+SELECT CIUDAD, BARRIO, SUM(LIMITE_DE_CREDITO) AS LIMITE_BARRIO FROM tabla_de_clientes WHERE CIUDAD = 'Ciudad de México' GROUP BY BARRIO ORDER BY 3 DESC;
+SELECT CIUDAD, BARRIO, SUM(LIMITE_DE_CREDITO) AS LIMITE_BARRIO FROM tabla_de_clientes WHERE CIUDAD = 'Guadalajara' GROUP BY BARRIO ORDER BY 3 DESC;
+SELECT CIUDAD, BARRIO, MAX(LIMITE_DE_CREDITO) AS LIMITE_BARRIO FROM tabla_de_clientes WHERE CIUDAD = 'Guadalajara' GROUP BY BARRIO ORDER BY 3 DESC;
+SELECT ESTADO, BARRIO, MAX(LIMITE_DE_CREDITO) AS LIMITE, EDAD FROM tabla_de_clientes WHERE EDAD >= 20 GROUP BY ESTADO, BARRIO ORDER BY EDAD;
+
+--  ¿Cuántos ítems vendidos cuentan con la mayor cantidad del producto '1101035'?
+SELECT MAX(CANTIDAD) AS CANTIDAD_MAXIMA FROM items_facturas WHERE CODIGO_DEL_PRODUCTO = "1101035";
+SELECT COUNT(*) FROM items_facturas WHERE CODIGO_DEL_PRODUCTO = "1101035" AND CANTIDAD = 99;
+
+-- COMANDO HAVING 
+-- FILTRO QUE SE APLICA SOBRE EL RESULTADO D EUNA AGREGACION
+-- SELECT X, SUM(Y) FROM TB GROUP X HAVING SUM(Y) > 4;
+SELECT ESTADO, SUM(LIMITE_DE_CREDITO) AS LIMITE_TOTAL FROM tabla_de_clientes WHERE LIMITE_DE_CREDITO > 30000 GROUP BY ESTADO;
+SELECT ESTADO, SUM(LIMITE_DE_CREDITO) AS LIMITE_TOTAL FROM tabla_de_clientes GROUP BY ESTADO HAVING LIMITE_TOTAL >300000 ;
+
+SELECT ENVASE, MAX(PRECIO_DE_LISTA) AS PRECIO_MAXIMO, MIN(PRECIO_DE_LISTA) AS PRECIO_MINIMO FROM tabla_de_productos GROUP BY ENVASE HAVING SUM(PRECIO_DE_LISTA) > 80;
+
+SELECT ENVASE, MAX(PRECIO_DE_LISTA) AS PRECIO_MAXIMO, MIN(PRECIO_DE_LISTA) AS PRECIO_MINIMO, SUM(PRECIO_DE_LISTA) AS SUMA_PRECIO FROM tabla_de_productos GROUP BY ENVASE HAVING SUM(PRECIO_DE_LISTA) > 80;
+
+SELECT ENVASE, MAX(PRECIO_DE_LISTA) AS PRECIO_MAXIMO, MIN(PRECIO_DE_LISTA) AS PRECIO_MINIMO, SUM(PRECIO_DE_LISTA) AS SUMA_PRECIO FROM tabla_de_productos GROUP BY ENVASE HAVING SUM(PRECIO_DE_LISTA) <= 80 AND MAX(PRECIO_DE_LISTA) >= 5;
+
+-- ¿Quiénes fueron los clientes que realizaron más de 2000 compras en 2016?
+SELECT * FROM facturas;
+
+SELECT DNI, COUNT(*) FROM facturas WHERE YEAR(FECHA_VENTA) = 2016
+GROUP BY DNI HAVING COUNT(*) > 2000;
+
+-- COMANDO CASE
+-- SE REALIZA UN TEST EN UNO O MAS CAMPOS Y DEPENDIENDO DE RESULTADO, OBTENDREMOS UN VALOR ESPECIFICO
+-- CASE 
+-- WHEN <condicion_1> THEN <value_1> 
+-- WHEN <condicion_2> THEN <value_2> 
+-- WHEN <condicion_N> THEN <value_N> 
+-- ELSE <valor_ELSE>  
+-- END
+SELECT * FROM tabla_de_productos;
+
+SELECT NOMBRE_DEL_PRODUCTO, PRECIO_DE_LISTA, 
+	CASE 
+		WHEN PRECIO_DE_LISTA >=12 THEN 'COSOTOSO'
+        WHEN PRECIO_DE_LISTA >=5 AND PRECIO_DE_LISTA < 12 THEN 'ACCESIBLE'
+        ELSE 'BARATO'
+    END AS PRECIO
+FROM tabla_de_productos;
+
+SELECT ENVASE, SABOR,
+	CASE 
+		WHEN PRECIO_DE_LISTA >=12 THEN 'COSOTOSO'
+        WHEN PRECIO_DE_LISTA >=5 AND PRECIO_DE_LISTA < 12 THEN 'ACCESIBLE'
+        ELSE 'BARATO'
+    END AS PRECIO, MIN(PRECIO_DE_LISTA) AS PRECIO_MINIMO
+FROM tabla_de_productos
+WHERE TAMANO = '700 ml'
+GROUP BY ENVASE, 
+CASE 
+		WHEN PRECIO_DE_LISTA >=12 THEN 'COSOTOSO'
+        WHEN PRECIO_DE_LISTA >=5 AND PRECIO_DE_LISTA < 12 THEN 'ACCESIBLE'
+        ELSE 'BARATO'
+    END 
+order by ENVASE;
+
+SELECT ENVASE, SABOR,
+CASE
+   WHEN PRECIO_DE_LISTA >= 12 THEN 'Costoso'
+   WHEN PRECIO_DE_LISTA >= 5 AND PRECIO_DE_LISTA < 12 THEN 'Asequible'
+   ELSE 'Barato'
+END AS PRECIO, MIN(PRECIO_DE_LISTA) AS PRECIO_MINIMO
+FROM tabla_de_productos
+WHERE TAMANO = '700 ml'
+GROUP BY ENVASE,
+CASE
+   WHEN PRECIO_DE_LISTA >= 12 THEN 'Costoso'
+   WHEN PRECIO_DE_LISTA >= 5 AND PRECIO_DE_LISTA < 12 THEN 'Asequible'
+   ELSE 'Barato'
+END
+ORDER BY ENVASE;
+
+-- Registre el año de nacimiento de los clientes y clasifíquelos de la siguiente manera:
+-- Nacidos antes de 1990= Viejos, nacidos entre 1990 y 1995= Jóvenes y nacidos después de 1995= Niños. Liste el nombre del cliente y esta clasificación.
+SELECT NOMBRE, EDAD, 
+CASE 
+    WHEN YEAR(fecha_de_nacimiento) < 1990 THEN 'Viejos'
+    WHEN YEAR(fecha_de_nacimiento) >= 1990 
+    AND YEAR(fecha_de_nacimiento) <= 1995 THEN 'Jóvenes' 
+    ELSE 'Niños' 
+END AS CLASIFICACION_EDAD
+FROM tabla_de_clientes;
