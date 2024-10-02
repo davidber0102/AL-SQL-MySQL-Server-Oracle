@@ -1,0 +1,40 @@
+/*
+			CALSE 2_ FUNVCION RAND
+*/
+
+
+SELECT* FROM clientes;
+SELECT* FROM productos;
+SELECT* FROM vendedores;
+
+SELECT* FROM facturas;
+SELECT* FROM items;
+
+-- LA FUNCION NRAND DEVELVE UN VALOR DECIMAL DE 0 A 1
+SELECT RAND() AS NUMERO1;
+SELECT RAND() AS NUMERO2;
+SELECT RAND() AS NUMERO3;
+SELECT RAND() AS NUMERO4;
+SELECT RAND() AS NUMERO5;
+
+-- MIN = 20  Y MAX =250
+-- ((RAND() *(MAX-MIN + 1)) + MIN)
+
+SELECT ((RAND() *( 250 - 20 + 1)) + 20) AS NUM;
+
+SELECT FLOOR((RAND() *( 250 - 20 + 1)) + 20) AS NUM;
+
+SET GLOBAL log_bin_trust_function_creators = 1;
+
+/*	
+	FUNCION PARA CREATR NUMERO ALETATORIO
+	
+		CREATE DEFINER=`root`@`localhost` FUNCTION `f_aleatorio`(min INT, max INT) RETURNS int
+BEGIN
+	DECLARE vresultado INT;
+		SELECT FLOOR((RAND() *( max - min + 1)) + min) AS NUM INTO vresultado;
+RETURN vresultado;
+END
+*/
+
+SELECT f_aleatorio(1, 20) AS NUM_ALEATORIO;
