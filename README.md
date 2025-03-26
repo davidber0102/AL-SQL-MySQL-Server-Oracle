@@ -1,5 +1,4 @@
-<h1 align="center">Comenzando y Conociendo</h1>
-<p align="center"> SQL con MySQL Server de Oracle</p>
+<h1 align="center"> SQL con MySQL Server de Oracle</h1>
 <p align="center">  Instructor: Alura Latam</p>
 <p align="center">  Alumno: David Bernal Diaz</p>
 
@@ -29,9 +28,7 @@ Tabla de contenidos:
 Es común en muchos repositorios open source el uso de badges o escudos para dar visbilidad el uso de microservicios, licencias, descargas, etc. Recomendamos revisar la iniciativa https://shields.io/ donde según consideres necesario podrás generar badges para tu repo. 
 
 ## badges
-
-   <p align="left">   <img src="https://img.shields.io/badge/STATUS-EN%20DESAROLLO-green">   </p>
-  
+ 
  ![GitHub](https://img.shields.io/github/license/dropbox/dropbox-sdk-java)
  ![Badge Release](https://img.shields.io/badge/Release%20Date:-Junio-blue)
  ![Badge Finalizado](https://img.shields.io/badge/Status:-Finalizado-blue)
@@ -43,31 +40,34 @@ Es común en muchos repositorios open source el uso de badges o escudos para dar
 
 ## Descripción y contexto
 ---
-Esto es un archivo README. Debe contener la documentación de soporte uso de la herramienta digital. Es la primera parte del curso HTML, impartido por Juan diaz en Pildoras Informaticas,
-EL curso esta compuesto por 78 video tutoriales. 
+Esto es un archivo README. Debe contener la documentación de soporte uso de la herramienta digital. Es la parte de SQL del programa ONE-ORACLE GNERACION 6, impartido Alura Latam,
+EL curso esta compuesto por 7 cursos con tiempo estimado de trabajo de 80 horas
 Los siguientes titulos son los que contiene este proyecto:
+
+- Introducción a SQL con MySQL: Manipule y consulte datos.
+- Consultas SQL: Avanzando en SQL con MySQL 
+- Comandos DML: Manipulación de datos con MySQL 
+- Procedures SQL: Ejecutando código en MySQL
+- SQL con MySQL: Proyecto final (
+- Administración de MySQL: Seguridad y optimización de la base de datos - Parte 1 
+- Administración de MySQL: Seguridad y optimización de la base de datos - Parte 2
 
 
 
 ## Guía de usuario
 A continuacion se explica brevemente los conceptos de aql
-- HTML5: El HyperText Markup Language (HTML) es el lenguaje de etiquetas de la World Wide Web. Es uno de los principales componentes de la Plataforma Web Abierta. La primera versión de HTML fue descrito por Tim      Berners-Lee a finales de 1991, la Recomendación del W3C actual de HTML es HTML 4.01, publicado en diciembre de 1999 Hay un trabajo sin embargo intensivo para definir su próxima versión, HTML5.
-- CSS (Cascading Style Sheets) le permite crear páginas web de gran aspecto.
- 	
+- Sql: De acuerdo con la pagina oficla de IBM, se define como el lenguaje de consulta estructurado (SQL) es un lenguaje de programación estandarizado y específico de dominio que sobresale en el manejo de relaciones de datos. Se emplea ampliamente para almacenar, manipular y recuperar datos en sistemas como MySQL, SQL Server y Oracle.
+- 
 ## Guía de instalación
 Paso a paso de cómo instalar  y / o consultar alguna herramienta digital o pagina web. En esta sección se explica la arquitectura de carpetas y módulos que componen el sistema.
-  - /css: archivo de estilos
-  - /img:  imagenes ocupadas en la plataforma web
-  - /: archivo html donde viene la estructura o maquetacion de este ejercicio web
+  - Contiene archivos sql que pueden ser abiertos en cualquier sistema gestor.
+
 
 La guía de instalación debe contener de manera específica:
 - Tener instalado Git [![Git](https://img.shields.io/badge/Git-F05032?logo=git&logoColor=fff)](#)
 - Tener instaldo cualquier editor de codigo.
 - Para este proyecto solo se debe contener cualquiera de los navegadores de internet, ademas de internet estable
-  - Mozila FireFox [![Firefox](https://img.shields.io/badge/Firefox-FF7139?logo=Firefox&logoColor=white)](#)
-  - Chrome [![Google Chrome](https://img.shields.io/badge/Google%20Chrome-4285F4?logo=GoogleChrome&logoColor=white)](#)
-  - Safari [![Safari](https://img.shields.io/badge/Safari-006CFF?logo=safari&logoColor=fff)](#)
-  - Opera [![Opera](https://img.shields.io/badge/Opera-FF1B2D?logo=Opera&logoColor=white)](#)
+- ![MySQL](https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white)
 
 ### Dependencias
 Para contar con la copia del codigo de este ejercicio, es necesario utilizar comandos de git,
